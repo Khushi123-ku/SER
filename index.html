@@ -1,0 +1,2086 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SER Security Management System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f3f6fa;
+    color:#172033;
+}
+
+/* HEADER */
+.header{
+    background:linear-gradient(135deg,#0b1f3a,#123e68);
+    color:white;
+    padding:22px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.logo-area h1{
+    font-size:27px;
+    letter-spacing:.5px;
+}
+
+.logo-area p{
+    margin-top:5px;
+    color:#cbd8e8;
+    font-size:14px;
+}
+
+.clock{
+    background:rgba(255,255,255,.1);
+    padding:12px 18px;
+    border-radius:10px;
+    text-align:center;
+}
+
+#clock{
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* NAVIGATION */
+.nav{
+    background:white;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.nav button{
+    border:none;
+    background:#eef3f8;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#24364d;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:#123e68;
+    color:white;
+}
+
+/* MAIN */
+.container{
+    max-width:1450px;
+    margin:auto;
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    margin-bottom:20px;
+}
+
+.page-title h2{
+    font-size:26px;
+}
+
+.page-title p{
+    color:#697586;
+    margin-top:5px;
+}
+
+/* DASHBOARD CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 5px 18px rgba(31,45,61,.08);
+    border-left:5px solid #123e68;
+}
+
+.card h3{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.card .number{
+    font-size:31px;
+    font-weight:bold;
+    color:#123e68;
+}
+
+/* FORM */
+.form-box{
+    background:white;
+    padding:24px;
+    border-radius:14px;
+    box-shadow:0 5px 18px rgba(31,45,61,.08);
+    margin-bottom:25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+}
+
+.field label{
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#344054;
+}
+
+.field input,
+.field select,
+.field textarea{
+    border:1px solid #d5dce5;
+    border-radius:8px;
+    padding:11px 12px;
+    font-size:14px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:#123e68;
+    box-shadow:0 0 0 3px rgba(18,62,104,.1);
+}
+
+.field textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.buttons{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:12px 19px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#123e68;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#0b2c4d;
+}
+
+.btn-secondary{
+    background:#e8edf3;
+    color:#24364d;
+}
+
+.btn-danger{
+    background:#c62828;
+    color:white;
+}
+
+.btn-success{
+    background:#177245;
+    color:white;
+}
+
+/* TABLE */
+.table-box{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 5px 18px rgba(31,45,61,.08);
+    overflow:hidden;
+}
+
+.table-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.table-top input{
+    padding:10px 13px;
+    border:1px solid #d5dce5;
+    border-radius:8px;
+    min-width:240px;
+}
+
+.table-scroll{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+th{
+    background:#123e68;
+    color:white;
+    padding:12px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    padding:11px 12px;
+    border-bottom:1px solid #e7ebf0;
+    font-size:13px;
+}
+
+tr:hover td{
+    background:#f7f9fb;
+}
+
+.badge{
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.inside{
+    background:#d9f7e6;
+    color:#116b3d;
+}
+
+.exited{
+    background:#e8edf3;
+    color:#455468;
+}
+
+/* FILTER */
+.filter-box{
+    background:#f7f9fc;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:18px;
+}
+
+.filter-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.filter-grid input,
+.filter-grid select{
+    padding:10px;
+    border:1px solid #d5dce5;
+    border-radius:8px;
+}
+
+/* WATER SUMMARY */
+.water-summary{
+    background:linear-gradient(135deg,#0b1f3a,#17658e);
+    color:white;
+    padding:25px;
+    border-radius:14px;
+    margin-bottom:20px;
+}
+
+.water-summary h3{
+    font-size:15px;
+    opacity:.8;
+}
+
+.water-summary .tank-count{
+    font-size:40px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+/* FOOTER */
+footer{
+    margin-top:30px;
+    padding:20px;
+    background:#0b1f3a;
+    color:#cbd8e8;
+    text-align:center;
+    font-size:13px;
+}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+    .form-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .filter-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+    .header{
+        padding:18px;
+    }
+
+    .logo-area h1{
+        font-size:21px;
+    }
+
+    .container{
+        padding:15px;
+    }
+
+    .form-grid,
+    .filter-grid{
+        grid-template-columns:1fr;
+    }
+
+    .nav button{
+        flex:1 1 45%;
+        font-size:12px;
+        padding:10px;
+    }
+
+    .clock{
+        width:100%;
+    }
+
+    .table-top input{
+        width:100%;
+        min-width:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+    <div class="logo-area">
+        <h1>🛡️ SER SECURITY MANAGEMENT</h1>
+        <p>Campus Security • Vehicle • Visitor • Water Tanker Management</p>
+    </div>
+
+    <div class="clock">
+        <div id="clock">--:--:--</div>
+        <small id="today">--</small>
+    </div>
+
+</header>
+
+
+<!-- NAVIGATION -->
+<nav class="nav">
+
+    <button class="active" onclick="showPage('dashboard',this)">
+        📊 Dashboard
+    </button>
+
+    <button onclick="showPage('truck',this)">
+        🚚 Truck Register
+    </button>
+
+    <button onclick="showPage('visitor',this)">
+        👤 Visitor Register
+    </button>
+
+    <button onclick="showPage('water',this)">
+        💧 Water Register
+    </button>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="page active">
+
+    <div class="page-title">
+        <h2>Security Dashboard</h2>
+        <p>Overall SER campus security activity</p>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Trucks</h3>
+            <div class="number" id="totalTrucks">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Trucks Inside</h3>
+            <div class="number" id="insideTrucks">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Trucks Exited</h3>
+            <div class="number" id="exitedTrucks">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Visitors</h3>
+            <div class="number" id="totalVisitors">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Water Tankers</h3>
+            <div class="number" id="totalWaterEntries">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Water Tanks</h3>
+            <div class="number" id="totalTanks">0</div>
+        </div>
+
+    </div>
+
+
+    <div class="table-box">
+
+        <div class="table-top">
+            <h3>Quick Reports</h3>
+
+            <div>
+                <button class="btn btn-success"
+                    onclick="exportAllCSV()">
+                    📥 Export All Data
+                </button>
+
+                <button class="btn btn-secondary"
+                    onclick="window.print()">
+                    🖨️ Print
+                </button>
+            </div>
+        </div>
+
+        <p style="color:#667085;line-height:1.7">
+            Use the navigation above to add and manage truck,
+            visitor and water tanker records. All records entered
+            on this browser are automatically saved.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= TRUCK REGISTER ================= -->
+
+<section id="truck" class="page">
+
+    <div class="page-title">
+        <h2>🚚 Truck Register</h2>
+        <p>Maintain campus vehicle entry and exit records</p>
+    </div>
+
+
+    <div class="form-box">
+
+        <h3>Add Truck Entry</h3>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Truck Number *</label>
+                <input id="truckNumber"
+                       placeholder="KA01AB1234">
+            </div>
+
+            <div class="field">
+                <label>Driver Name *</label>
+                <input id="driverName"
+                       placeholder="Driver Name">
+            </div>
+
+            <div class="field">
+                <label>Driver Mobile *</label>
+                <input id="driverMobile"
+                       maxlength="10"
+                       placeholder="10 digit mobile">
+            </div>
+
+            <div class="field">
+                <label>Entry Date *</label>
+                <input type="date" id="truckEntryDate">
+            </div>
+
+            <div class="field">
+                <label>Entry Time *</label>
+                <input type="time" id="truckEntryTime">
+            </div>
+
+            <div class="field">
+                <label>Purpose</label>
+                <input id="truckPurpose"
+                       placeholder="Material Delivery">
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="btn btn-primary"
+                    onclick="addTruck()">
+                ➕ Add Truck Entry
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="clearTruckForm()">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="table-box">
+
+        <div class="table-top">
+
+            <h3>Truck Records</h3>
+
+            <input type="text"
+                   id="truckSearch"
+                   onkeyup="displayTrucks()"
+                   placeholder="Search truck / driver / mobile">
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <div class="filter-grid">
+
+                <input type="date"
+                       id="truckFrom"
+                       onchange="displayTrucks()">
+
+                <input type="date"
+                       id="truckTo"
+                       onchange="displayTrucks()">
+
+                <select id="truckStatusFilter"
+                        onchange="displayTrucks()">
+
+                    <option value="">All Status</option>
+                    <option value="INSIDE">Inside</option>
+                    <option value="EXITED">Exited</option>
+
+                </select>
+
+                <button class="btn btn-secondary"
+                        onclick="clearTruckFilters()">
+                    Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Truck Number</th>
+                        <th>Driver</th>
+                        <th>Mobile</th>
+                        <th>Purpose</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="truckTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= VISITOR REGISTER ================= -->
+
+<section id="visitor" class="page">
+
+    <div class="page-title">
+        <h2>👤 Unknown / Visitor Register</h2>
+        <p>Maintain records of unknown persons and campus visitors</p>
+    </div>
+
+
+    <div class="form-box">
+
+        <h3>Add Visitor Entry</h3>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Visitor Name *</label>
+                <input id="visitorName"
+                       placeholder="Full Name">
+            </div>
+
+            <div class="field">
+                <label>Mobile Number *</label>
+                <input id="visitorMobile"
+                       maxlength="10"
+                       placeholder="10 digit mobile">
+            </div>
+
+            <div class="field">
+                <label>Date *</label>
+                <input type="date"
+                       id="visitorDate">
+            </div>
+
+            <div class="field">
+                <label>Time *</label>
+                <input type="time"
+                       id="visitorTime">
+            </div>
+
+            <div class="field">
+                <label>Purpose *</label>
+                <input id="visitorPurpose"
+                       placeholder="Meeting / Delivery / Enquiry">
+            </div>
+
+            <div class="field">
+                <label>Company / Person To Meet</label>
+                <input id="visitorMeet"
+                       placeholder="HR / Manager / Employee">
+            </div>
+
+            <div class="field full">
+                <label>Remarks</label>
+                <textarea id="visitorRemarks"
+                          placeholder="Additional information"></textarea>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="btn btn-primary"
+                    onclick="addVisitor()">
+                ➕ Add Visitor
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="clearVisitorForm()">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="table-box">
+
+        <div class="table-top">
+
+            <h3>Visitor Records</h3>
+
+            <input type="text"
+                   id="visitorSearch"
+                   onkeyup="displayVisitors()"
+                   placeholder="Search visitor / mobile / purpose">
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <div class="filter-grid">
+
+                <input type="date"
+                       id="visitorFrom"
+                       onchange="displayVisitors()">
+
+                <input type="date"
+                       id="visitorTo"
+                       onchange="displayVisitors()">
+
+                <div></div>
+
+                <button class="btn btn-secondary"
+                        onclick="clearVisitorFilters()">
+                    Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Purpose</th>
+                        <th>Meeting</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="visitorTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= WATER REGISTER ================= -->
+
+<section id="water" class="page">
+
+    <div class="page-title">
+        <h2>💧 Water Tanker Register</h2>
+        <p>Track water tanker arrivals and total water tanks</p>
+    </div>
+
+
+    <div class="water-summary">
+
+        <h3>FILTERED TOTAL WATER TANKS</h3>
+
+        <div class="tank-count"
+             id="filteredTankTotal">
+            0
+        </div>
+
+        <p>
+            Total number of tanks for selected date range
+        </p>
+
+    </div>
+
+
+    <div class="form-box">
+
+        <h3>Add Water Tanker Entry</h3>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Tanker Number *</label>
+                <input id="waterVehicle"
+                       placeholder="KA01XY1234">
+            </div>
+
+            <div class="field">
+                <label>Driver Name</label>
+                <input id="waterDriver"
+                       placeholder="Driver Name">
+            </div>
+
+            <div class="field">
+                <label>Driver Mobile</label>
+                <input id="waterMobile"
+                       maxlength="10"
+                       placeholder="10 digit mobile">
+            </div>
+
+            <div class="field">
+                <label>Number of Tanks *</label>
+                <input type="number"
+                       id="waterTankCount"
+                       min="1"
+                       placeholder="1">
+            </div>
+
+            <div class="field">
+                <label>Date *</label>
+                <input type="date"
+                       id="waterDate">
+            </div>
+
+            <div class="field">
+                <label>Time *</label>
+                <input type="time"
+                       id="waterTime">
+            </div>
+
+            <div class="field">
+                <label>Supplier / Company</label>
+                <input id="waterSupplier"
+                       placeholder="Water Supplier">
+            </div>
+
+            <div class="field">
+                <label>Remarks</label>
+                <input id="waterRemarks"
+                       placeholder="Additional information">
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="btn btn-primary"
+                    onclick="addWater()">
+                ➕ Add Water Entry
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="clearWaterForm()">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="table-box">
+
+        <div class="table-top">
+
+            <h3>Water Tanker Records</h3>
+
+            <input type="text"
+                   id="waterSearch"
+                   onkeyup="displayWater()"
+                   placeholder="Search tanker / driver / supplier">
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <div class="filter-grid">
+
+                <input type="date"
+                       id="waterFrom"
+                       onchange="displayWater()">
+
+                <input type="date"
+                       id="waterTo"
+                       onchange="displayWater()">
+
+                <div></div>
+
+                <button class="btn btn-secondary"
+                        onclick="clearWaterFilters()">
+                    Clear Filters
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Tanker Number</th>
+                        <th>Driver</th>
+                        <th>Mobile</th>
+                        <th>Tanks</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Supplier</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="waterTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    © 2026 SER Security Management System |
+    Secure Campus Record Management
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   DATA STORAGE
+===================================================== */
+
+let trucks =
+    JSON.parse(localStorage.getItem("ser_trucks")) || [];
+
+let visitors =
+    JSON.parse(localStorage.getItem("ser_visitors")) || [];
+
+let water =
+    JSON.parse(localStorage.getItem("ser_water")) || [];
+
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(pageId, button){
+
+    document.querySelectorAll(".page")
+        .forEach(page => page.classList.remove("active"));
+
+    document.getElementById(pageId)
+        .classList.add("active");
+
+    document.querySelectorAll(".nav button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    updateDashboard();
+
+}
+
+
+
+/* =====================================================
+   DATE / TIME
+===================================================== */
+
+function setDefaultDateTime(){
+
+    const now = new Date();
+
+    const date =
+        now.getFullYear() + "-" +
+        String(now.getMonth()+1).padStart(2,"0") + "-" +
+        String(now.getDate()).padStart(2,"0");
+
+    const time =
+        String(now.getHours()).padStart(2,"0") + ":" +
+        String(now.getMinutes()).padStart(2,"0");
+
+    document.getElementById("truckEntryDate").value = date;
+    document.getElementById("truckEntryTime").value = time;
+
+    document.getElementById("visitorDate").value = date;
+    document.getElementById("visitorTime").value = time;
+
+    document.getElementById("waterDate").value = date;
+    document.getElementById("waterTime").value = time;
+
+}
+
+
+
+function updateClock(){
+
+    const now = new Date();
+
+    let hours = now.getHours();
+
+    const minutes =
+        String(now.getMinutes()).padStart(2,"0");
+
+    const seconds =
+        String(now.getSeconds()).padStart(2,"0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+
+    if(hours === 0) hours = 12;
+
+    document.getElementById("clock").textContent =
+        `${String(hours).padStart(2,"0")}:${minutes}:${seconds} ${ampm}`;
+
+    document.getElementById("today").textContent =
+        now.toLocaleDateString("en-IN",{
+            weekday:"long",
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        });
+
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+
+
+/* =====================================================
+   TRUCK REGISTER
+===================================================== */
+
+function addTruck(){
+
+    const truckNumber =
+        document.getElementById("truckNumber").value.trim();
+
+    const driverName =
+        document.getElementById("driverName").value.trim();
+
+    const driverMobile =
+        document.getElementById("driverMobile").value.trim();
+
+    const entryDate =
+        document.getElementById("truckEntryDate").value;
+
+    const entryTime =
+        document.getElementById("truckEntryTime").value;
+
+    const purpose =
+        document.getElementById("truckPurpose").value.trim();
+
+
+    if(!truckNumber || !driverName ||
+       !driverMobile || !entryDate || !entryTime){
+
+        alert("Please fill all required truck details.");
+        return;
+    }
+
+
+    if(!/^[0-9]{10}$/.test(driverMobile)){
+
+        alert("Driver mobile must contain exactly 10 digits.");
+        return;
+    }
+
+
+    const record = {
+
+        id:Date.now(),
+
+        truckNumber:truckNumber.toUpperCase(),
+
+        driverName,
+
+        driverMobile,
+
+        purpose,
+
+        entryDate,
+
+        entryTime,
+
+        exitDate:"",
+
+        exitTime:"",
+
+        status:"INSIDE"
+
+    };
+
+
+    trucks.push(record);
+
+    saveData();
+
+    clearTruckForm();
+
+    displayTrucks();
+
+    updateDashboard();
+
+    alert("Truck entry added successfully.");
+
+}
+
+
+
+function exitTruck(id){
+
+    const truck =
+        trucks.find(t => t.id === id);
+
+    if(!truck) return;
+
+
+    if(truck.status === "EXITED"){
+
+        alert("This truck has already exited.");
+        return;
+
+    }
+
+
+    const now = new Date();
+
+    truck.exitDate =
+        now.getFullYear() + "-" +
+        String(now.getMonth()+1).padStart(2,"0") + "-" +
+        String(now.getDate()).padStart(2,"0");
+
+    truck.exitTime =
+        String(now.getHours()).padStart(2,"0") + ":" +
+        String(now.getMinutes()).padStart(2,"0");
+
+    truck.status = "EXITED";
+
+
+    saveData();
+
+    displayTrucks();
+
+    updateDashboard();
+
+}
+
+
+
+function displayTrucks(){
+
+    const tbody =
+        document.getElementById("truckTable");
+
+    const search =
+        document.getElementById("truckSearch")
+        .value.toLowerCase();
+
+    const from =
+        document.getElementById("truckFrom").value;
+
+    const to =
+        document.getElementById("truckTo").value;
+
+    const status =
+        document.getElementById("truckStatusFilter").value;
+
+
+    const filtered = trucks.filter(t => {
+
+        const text =
+            `${t.truckNumber} ${t.driverName} ${t.driverMobile} ${t.purpose}`
+            .toLowerCase();
+
+        const matchesSearch =
+            text.includes(search);
+
+        const matchesFrom =
+            !from || t.entryDate >= from;
+
+        const matchesTo =
+            !to || t.entryDate <= to;
+
+        const matchesStatus =
+            !status || t.status === status;
+
+        return matchesSearch &&
+               matchesFrom &&
+               matchesTo &&
+               matchesStatus;
+
+    });
+
+
+    tbody.innerHTML = "";
+
+
+    filtered.forEach((t,index) => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${index+1}</td>
+
+            <td><b>${escapeHTML(t.truckNumber)}</b></td>
+
+            <td>${escapeHTML(t.driverName)}</td>
+
+            <td>${escapeHTML(t.driverMobile)}</td>
+
+            <td>${escapeHTML(t.purpose || "-")}</td>
+
+            <td>
+                ${formatDate(t.entryDate)}
+                <br>
+                ${formatTime(t.entryTime)}
+            </td>
+
+            <td>
+                ${t.exitDate ?
+                formatDate(t.exitDate)+"<br>"+formatTime(t.exitTime)
+                : "-"}
+            </td>
+
+            <td>
+                <span class="badge ${t.status === "INSIDE" ? "inside":"exited"}">
+                    ${t.status}
+                </span>
+            </td>
+
+            <td>
+
+                ${
+                    t.status === "INSIDE"
+
+                    ?
+
+                    `<button class="btn btn-success"
+                        onclick="exitTruck(${t.id})">
+                        Exit
+                    </button>`
+
+                    :
+
+                    `<button class="btn btn-danger"
+                        onclick="deleteTruck(${t.id})">
+                        Delete
+                    </button>`
+                }
+
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+
+function deleteTruck(id){
+
+    if(!confirm("Delete this truck record?"))
+        return;
+
+    trucks =
+        trucks.filter(t => t.id !== id);
+
+    saveData();
+
+    displayTrucks();
+
+    updateDashboard();
+
+}
+
+
+
+function clearTruckForm(){
+
+    document.getElementById("truckNumber").value="";
+    document.getElementById("driverName").value="";
+    document.getElementById("driverMobile").value="";
+    document.getElementById("truckPurpose").value="";
+
+    setDefaultDateTime();
+
+}
+
+
+
+function clearTruckFilters(){
+
+    document.getElementById("truckFrom").value="";
+    document.getElementById("truckTo").value="";
+    document.getElementById("truckStatusFilter").value="";
+    document.getElementById("truckSearch").value="";
+
+    displayTrucks();
+
+}
+
+
+
+/* =====================================================
+   VISITOR REGISTER
+===================================================== */
+
+function addVisitor(){
+
+    const name =
+        document.getElementById("visitorName").value.trim();
+
+    const mobile =
+        document.getElementById("visitorMobile").value.trim();
+
+    const date =
+        document.getElementById("visitorDate").value;
+
+    const time =
+        document.getElementById("visitorTime").value;
+
+    const purpose =
+        document.getElementById("visitorPurpose").value.trim();
+
+    const meet =
+        document.getElementById("visitorMeet").value.trim();
+
+    const remarks =
+        document.getElementById("visitorRemarks").value.trim();
+
+
+    if(!name || !mobile || !date ||
+       !time || !purpose){
+
+        alert("Please fill all required visitor details.");
+        return;
+    }
+
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+
+        alert("Mobile number must contain exactly 10 digits.");
+        return;
+    }
+
+
+    visitors.push({
+
+        id:Date.now(),
+
+        name,
+
+        mobile,
+
+        date,
+
+        time,
+
+        purpose,
+
+        meet,
+
+        remarks
+
+    });
+
+
+    saveData();
+
+    clearVisitorForm();
+
+    displayVisitors();
+
+    updateDashboard();
+
+    alert("Visitor record added successfully.");
+
+}
+
+
+
+function displayVisitors(){
+
+    const tbody =
+        document.getElementById("visitorTable");
+
+    const search =
+        document.getElementById("visitorSearch")
+        .value.toLowerCase();
+
+    const from =
+        document.getElementById("visitorFrom").value;
+
+    const to =
+        document.getElementById("visitorTo").value;
+
+
+    const filtered =
+        visitors.filter(v => {
+
+            const text =
+                `${v.name} ${v.mobile} ${v.purpose} ${v.meet} ${v.remarks}`
+                .toLowerCase();
+
+            return text.includes(search) &&
+                   (!from || v.date >= from) &&
+                   (!to || v.date <= to);
+
+        });
+
+
+    tbody.innerHTML="";
+
+
+    filtered.forEach((v,index) => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${index+1}</td>
+
+            <td><b>${escapeHTML(v.name)}</b></td>
+
+            <td>${escapeHTML(v.mobile)}</td>
+
+            <td>${formatDate(v.date)}</td>
+
+            <td>${formatTime(v.time)}</td>
+
+            <td>${escapeHTML(v.purpose)}</td>
+
+            <td>${escapeHTML(v.meet || "-")}</td>
+
+            <td>${escapeHTML(v.remarks || "-")}</td>
+
+            <td>
+
+                <button class="btn btn-danger"
+                    onclick="deleteVisitor(${v.id})">
+                    Delete
+                </button>
+
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+
+function deleteVisitor(id){
+
+    if(!confirm("Delete this visitor record?"))
+        return;
+
+    visitors =
+        visitors.filter(v => v.id !== id);
+
+    saveData();
+
+    displayVisitors();
+
+    updateDashboard();
+
+}
+
+
+
+function clearVisitorForm(){
+
+    document.getElementById("visitorName").value="";
+    document.getElementById("visitorMobile").value="";
+    document.getElementById("visitorPurpose").value="";
+    document.getElementById("visitorMeet").value="";
+    document.getElementById("visitorRemarks").value="";
+
+    setDefaultDateTime();
+
+}
+
+
+
+function clearVisitorFilters(){
+
+    document.getElementById("visitorFrom").value="";
+    document.getElementById("visitorTo").value="";
+    document.getElementById("visitorSearch").value="";
+
+    displayVisitors();
+
+}
+
+
+
+/* =====================================================
+   WATER REGISTER
+===================================================== */
+
+function addWater(){
+
+    const vehicle =
+        document.getElementById("waterVehicle").value.trim();
+
+    const driver =
+        document.getElementById("waterDriver").value.trim();
+
+    const mobile =
+        document.getElementById("waterMobile").value.trim();
+
+    const tanks =
+        Number(document.getElementById("waterTankCount").value);
+
+    const date =
+        document.getElementById("waterDate").value;
+
+    const time =
+        document.getElementById("waterTime").value;
+
+    const supplier =
+        document.getElementById("waterSupplier").value.trim();
+
+    const remarks =
+        document.getElementById("waterRemarks").value.trim();
+
+
+    if(!vehicle || !tanks || !date || !time){
+
+        alert("Please fill tanker number, tanks, date and time.");
+        return;
+    }
+
+
+    if(mobile && !/^[0-9]{10}$/.test(mobile)){
+
+        alert("Mobile number must contain exactly 10 digits.");
+        return;
+    }
+
+
+    water.push({
+
+        id:Date.now(),
+
+        vehicle:vehicle.toUpperCase(),
+
+        driver,
+
+        mobile,
+
+        tanks,
+
+        date,
+
+        time,
+
+        supplier,
+
+        remarks
+
+    });
+
+
+    saveData();
+
+    clearWaterForm();
+
+    displayWater();
+
+    updateDashboard();
+
+    alert("Water tanker entry added successfully.");
+
+}
+
+
+
+function displayWater(){
+
+    const tbody =
+        document.getElementById("waterTable");
+
+    const search =
+        document.getElementById("waterSearch")
+        .value.toLowerCase();
+
+    const from =
+        document.getElementById("waterFrom").value;
+
+    const to =
+        document.getElementById("waterTo").value;
+
+
+    const filtered =
+        water.filter(w => {
+
+            const text =
+                `${w.vehicle} ${w.driver} ${w.mobile} ${w.supplier} ${w.remarks}`
+                .toLowerCase();
+
+            return text.includes(search) &&
+                   (!from || w.date >= from) &&
+                   (!to || w.date <= to);
+
+        });
+
+
+    tbody.innerHTML="";
+
+
+    let totalTanks = 0;
+
+
+    filtered.forEach((w,index) => {
+
+        totalTanks += Number(w.tanks);
+
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${index+1}</td>
+
+            <td><b>${escapeHTML(w.vehicle)}</b></td>
+
+            <td>${escapeHTML(w.driver || "-")}</td>
+
+            <td>${escapeHTML(w.mobile || "-")}</td>
+
+            <td>
+                <b>${w.tanks}</b>
+            </td>
+
+            <td>${formatDate(w.date)}</td>
+
+            <td>${formatTime(w.time)}</td>
+
+            <td>${escapeHTML(w.supplier || "-")}</td>
+
+            <td>${escapeHTML(w.remarks || "-")}</td>
+
+            <td>
+
+                <button class="btn btn-danger"
+                    onclick="deleteWater(${w.id})">
+                    Delete
+                </button>
+
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+
+    document.getElementById("filteredTankTotal")
+        .textContent = totalTanks;
+
+}
+
+
+
+function deleteWater(id){
+
+    if(!confirm("Delete this water tanker record?"))
+        return;
+
+    water =
+        water.filter(w => w.id !== id);
+
+    saveData();
+
+    displayWater();
+
+    updateDashboard();
+
+}
+
+
+
+function clearWaterForm(){
+
+    document.getElementById("waterVehicle").value="";
+    document.getElementById("waterDriver").value="";
+    document.getElementById("waterMobile").value="";
+    document.getElementById("waterTankCount").value="";
+    document.getElementById("waterSupplier").value="";
+    document.getElementById("waterRemarks").value="";
+
+    setDefaultDateTime();
+
+}
+
+
+
+function clearWaterFilters(){
+
+    document.getElementById("waterFrom").value="";
+    document.getElementById("waterTo").value="";
+    document.getElementById("waterSearch").value="";
+
+    displayWater();
+
+}
+
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+    document.getElementById("totalTrucks")
+        .textContent = trucks.length;
+
+    document.getElementById("insideTrucks")
+        .textContent =
+        trucks.filter(t => t.status === "INSIDE").length;
+
+    document.getElementById("exitedTrucks")
+        .textContent =
+        trucks.filter(t => t.status === "EXITED").length;
+
+    document.getElementById("totalVisitors")
+        .textContent = visitors.length;
+
+    document.getElementById("totalWaterEntries")
+        .textContent = water.length;
+
+    document.getElementById("totalTanks")
+        .textContent =
+        water.reduce(
+            (sum,w) => sum + Number(w.tanks),0
+        );
+
+}
+
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+function saveData(){
+
+    localStorage.setItem(
+        "ser_trucks",
+        JSON.stringify(trucks)
+    );
+
+    localStorage.setItem(
+        "ser_visitors",
+        JSON.stringify(visitors)
+    );
+
+    localStorage.setItem(
+        "ser_water",
+        JSON.stringify(water)
+    );
+
+}
+
+
+
+/* =====================================================
+   CSV EXPORT
+===================================================== */
+
+function downloadCSV(filename,rows){
+
+    const csv =
+        rows.map(row =>
+            row.map(value =>
+                `"${String(value ?? "")
+                .replace(/"/g,'""')}"`
+            ).join(",")
+        ).join("\n");
+
+
+    const blob =
+        new Blob([csv],{
+            type:"text/csv;charset=utf-8;"
+        });
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download = filename;
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+
+function exportAllCSV(){
+
+    const rows = [
+
+        [
+            "TRUCK REGISTER"
+        ],
+
+        [
+            "Truck Number",
+            "Driver Name",
+            "Driver Mobile",
+            "Purpose",
+            "Entry Date",
+            "Entry Time",
+            "Exit Date",
+            "Exit Time",
+            "Status"
+        ]
+
+    ];
+
+
+    trucks.forEach(t => {
+
+        rows.push([
+
+            t.truckNumber,
+            t.driverName,
+            t.driverMobile,
+            t.purpose,
+            t.entryDate,
+            t.entryTime,
+            t.exitDate,
+            t.exitTime,
+            t.status
+
+        ]);
+
+    });
+
+
+    rows.push([]);
+
+    rows.push([
+        "VISITOR REGISTER"
+    ]);
+
+    rows.push([
+        "Name",
+        "Mobile",
+        "Date",
+        "Time",
+        "Purpose",
+        "Meeting",
+        "Remarks"
+    ]);
+
+
+    visitors.forEach(v => {
+
+        rows.push([
+
+            v.name,
+            v.mobile,
+            v.date,
+            v.time,
+            v.purpose,
+            v.meet,
+            v.remarks
+
+        ]);
+
+    });
+
+
+    rows.push([]);
+
+    rows.push([
+        "WATER TANKER REGISTER"
+    ]);
+
+    rows.push([
+        "Tanker Number",
+        "Driver",
+        "Mobile",
+        "Tanks",
+        "Date",
+        "Time",
+        "Supplier",
+        "Remarks"
+    ]);
+
+
+    water.forEach(w => {
+
+        rows.push([
+
+            w.vehicle,
+            w.driver,
+            w.mobile,
+            w.tanks,
+            w.date,
+            w.time,
+            w.supplier,
+            w.remarks
+
+        ]);
+
+    });
+
+
+    downloadCSV(
+        "SER_Security_All_Records.csv",
+        rows
+    );
+
+}
+
+
+
+/* =====================================================
+   FORMAT HELPERS
+===================================================== */
+
+function formatDate(date){
+
+    if(!date) return "-";
+
+    const parts = date.split("-");
+
+    if(parts.length !== 3)
+        return date;
+
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+}
+
+
+
+function formatTime(time){
+
+    if(!time) return "-";
+
+    const parts = time.split(":");
+
+    let hour = Number(parts[0]);
+
+    const minute = parts[1];
+
+    const ampm = hour >= 12 ? "PM" : "AM";
+
+    hour = hour % 12;
+
+    if(hour === 0) hour = 12;
+
+    return `${hour}:${minute} ${ampm}`;
+
+}
+
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+setDefaultDateTime();
+
+displayTrucks();
+
+displayVisitors();
+
+displayWater();
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
+```
